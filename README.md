@@ -5,3 +5,9 @@ Did you find a long article that you find tiresome to read line by line? blog-re
 - [IGN](htts://za.ign.com)
 - [Entertainment Weekly](https://ew.com)
 - [The Verge](https://www.theverge.com)
+
+
+## Installation
+- clone the repo
+- navigate `cd blog-reader`
+- run the command `bash open.sh`
