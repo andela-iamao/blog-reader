@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-
+import sys
 import urllib2
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
@@ -21,25 +21,29 @@ def getTextFromUrl(url):
 
 
 def summarizeText(text, n):
-    if text == False:
-        exit()
-    sentences = sent_tokenize(text)
-    if n > len(sentences):
-        print 'I cannot summarize in more sentence than the original text'
-        exit()
+    try:
+        if text == False:
+            sys.exit()
+        sentences = sent_tokenize(text)
+        if n > len(sentences):
+            print 'I cannot summarize in more sentence than the original text'
+            sys.exit()
     
-    words = word_tokenize(text.lower())
-    stop_words = set(stopwords.words('english') + list(punctuation))
-    all_words = [word for word in words if word not in stop_words]
-    frequency = FreqDist(all_words)
-    ranking = defaultdict(int)
+        words = word_tokenize(text.lower())
+        stop_words = set(stopwords.words('english') + list(punctuation))
+        all_words = [word for word in words if word not in stop_words]
+        frequency = FreqDist(all_words)
+        ranking = defaultdict(int)
 
-    for index, sentence in enumerate(sentences):
-        for w in word_tokenize(sentence.lower()):
-            if w in frequency:
-                ranking[index] += frequency[w]
-    
-    return ''.join([sentences[i] for i in sorted(nlargest(n, ranking, key=ranking.get))]).strip('\n\t')
+        for index, sentence in enumerate(sentences):
+            for w in word_tokenize(sentence.lower()):
+                if w in frequency:
+                    ranking[index] += frequency[w]
+
+        return ''.join([sentences[i] for i in sorted(nlargest(n, ranking, key=ranking.get))]).strip('\n\t')
+    except:
+        print ':('
+        sys.exit()
 
 article = raw_input('> Enter blog URL: ')
 sentence_length = int(raw_input('> How many sentences should I summarize in ? '))
